@@ -1,0 +1,30 @@
+package OneToManyuni.dao;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+
+import OnetoMany_Uni.dto.Company;
+import OnetoMany_Uni.dto.Employee;
+
+public class CompanyDao {
+ 
+	public EntityManager getEntityManager() {
+		return Persistence.createEntityManagerFactory("vaishnavi").createEntityManager();
+	}
+	public void saveCompany(Company company) {
+		EntityManager entityManager = getEntityManager();
+		EntityTransaction entityTransaction = entityManager.getTransaction();
+		
+		entityTransaction.begin();
+		List<Employee> employees = company.getEmployees();
+		for(Employee employee:employees) {
+			entityManager.persist(employee);
+		}
+		entityManager.persist(company);
+		entityTransaction.commit();
+	}
+}
+
